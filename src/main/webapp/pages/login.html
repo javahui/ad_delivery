@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>广告缓存管理后台登录</title> 
+<#include "/common/meta.html"/>
+<link href="${ctx}/style/ad-login.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+</head>
+<body>
+	<div id="loginbox">
+		<form id="login" method="post" action="login-valid">
+			<h1>管理登录</h1>
+			<font style="color:red;"><#if error_user?exists> ${error_user} </#if></font>
+			<font style="color:red;"><#if error_pass?exists> ${error_pass} </#if></font>
+			<fieldset id="inputs">
+				<input id="username" name="username" type="text" placeholder="请输入用户名" autofocus required /> 
+				<input id="password" name="password" type="password" placeholder="请输入密码" required />
+			</fieldset>
+			<fieldset id="actions">
+				<input type="button" id="login-btn" value="登录" />
+			</fieldset>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#login-btn").click(function() {
+				var username = $("#username").val();
+				var password = $("#password").val();
+				if(username == '') {
+					alert("请输入用户名");
+					$("#username").focus();
+					return;
+				}
+				if(password == '') {
+					alert("请输入密码");
+					$("#password").focus();
+					return;
+				}
+				
+				$("#login").submit();
+				
+			});
+        });
+   </script>
+        
+</body>
+</html>

@@ -1,0 +1,16 @@
+/target/
+.idea
+.cache
+.settings
+.project
+.classpath
+.DS_Store
+target
+*/*.iml
+*/target/**
+*.iml
+*/.project
+*/.classpath
+*/.settings
+*/.externalToolBuilders
+*/*.springBeans

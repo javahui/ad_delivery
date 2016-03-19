@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adLogCount">
+    
+    <select id="findAll"  resultType="com.hupu.ad.domain.AdLogCount">
+        select 
+            ad_id as adId,
+            show_count as showCount,
+            click_count as clickCount,
+            fans_count as fansCount,
+            dateline
+        from ad_log_count
+    </select>
+    
+    <select id="selectCountByadIdAndDateline" parameterType="com.hupu.ad.domain.AdLogCount" resultType="int">
+        select id from ad_log_count where ad_id=#{adId} and dateline=#{dateline} limit 1
+    </select>
+    
+    <insert id="insert" parameterType="com.hupu.ad.domain.AdLogCount" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO ad_log_count(ad_id,show_count,click_count,fans_count,dateline) values(#{adId},#{showCount},#{clickCount},#{fansCount},#{dateline})
+    </insert>
+    
+   <update id="updateCountById" parameterType="com.hupu.ad.domain.AdLogCount">
+        UPDATE ad_log_count SET 
+            show_count = show_count + #{showCount} , 
+            click_count = click_count + #{clickCount},
+            fans_count = fans_count + #{fansCount}
+        WHERE id = #{id}
+    </update>
+    
+   <update id="updateIncrementByAdIdAndDateline" parameterType="com.hupu.ad.domain.AdLogCount">
+        UPDATE ad_log_count SET 
+            show_count = show_count + #{showCount} , 
+            click_count = click_count + #{clickCount},
+            fans_count = fans_count + #{fansCount}
+        WHERE ad_id=#{adId} and dateline=#{dateline}
+    </update>
+    
+   <update id="updateCountByAdIdAndDateline" parameterType="com.hupu.ad.domain.AdLogCount">
+        UPDATE ad_log_count SET 
+            show_count = #{showCount} , 
+            click_count = #{clickCount},
+            fans_count = #{fansCount}
+        WHERE ad_id=#{adId} and dateline=#{dateline}
+    </update>
+    
+    <delete id="deleteByAdIdAndDateline" parameterType="com.hupu.ad.domain.AdLogCount">
+        delete from ad_log_count where ad_id=#{adId} and dateline=#{dateline}
+    </delete>
+</mapper>
+    

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>广告日志队列缓存管理</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			//全选checkbox的处理方法  
+		    function doAllCheck(){  
+		        var allche = document.getElementById("allid");  
+		        var che = document.getElementsByName("adCacheId");  
+		        if(allche.checked == true){  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked="checked";  
+		            }  
+		        }else{  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked=false;  
+		            }  
+		        }  
+		    }  
+			
+			function selectOne() {
+				 var a = $(":checkbox:checked");
+				 if(a.length < 1) 
+					 return false;
+				 else 
+					 return true;
+				
+			}
+		</script>
+		<script type="text/javascript">
+					$(document).ready(function() {
+						$("#clearCache").click(function() {
+							var url = "${ctx}/clearQueueAndWriteDB";
+							$.ajax( {
+								type : "get",
+								url : url,
+								dataType : "html",
+								beforeSend : function(XMLHttpRequest) {
+								// ShowLoading();
+								},
+								success : function(data) {
+									alert(data);
+								},
+								complete : function(XMLHttpRequest, textStatus) {
+									// HideLoading();
+								},
+								error : function() {
+									// 请求出错处理
+								}
+							}); 
+							
+						});
+						
+						$("#reNewCache").click(function() {
+							if(!selectOne()) {
+								alert("至少选中一个缓存再重新生成");
+								return;
+							}
+							$("#adIds-renew").val("");
+							settingAdIds("adIds-renew");
+							$("#reNewUAdCacheForm").submit();
+							
+						});
+						
+						
+			        });
+		   </script>
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>这是广告日志队列的所有缓存列表</h1>
+			<div>
+				<input type="button" name="clearCache" id="clearCache" value="清除所有广告日志队列缓存" />
+				<form name="reNewUAdCacheForm" id="reNewUAdCacheForm" method="post" action="${ctx}/cache/renew-adlogqueue" style="width:160px;float:left;">
+					<input type="hidden" name="adIds" id="adIds-renew" value="" />
+					<input type="button" name="reNewCache" id="reNewCache" value="重新生成缓存" />
+				</form>
+				<form name="adlistForm" id="adListForm" method="post" action="${ctx}/cache/adlogqueue/create" style="width:360px;float:left;">
+					输入广告id:<input type="text" name="adId" id="adId" value="" />
+					<input type="submit" name="生成缓存" value="生成缓存"/>
+				</form>
+				
+				<div style="clear:both;"></div>
+			</div>
+			<div>
+				<table width="100%" border="1" align="center" cellpadding="3" cellspacing="1">
+					<tr align="center">
+						<th><input type="checkbox" id="allid" onclick="doAllCheck()" title="全选" />全选</th>
+						<th>广告id</th>
+						<th>广告商id</th>
+						<th>事件类型</th>
+						<th>网页url</th>
+						<th>IP地址</th>
+						<th>是否个人用户</th>
+						<th>用户端口号</th>
+					</tr>
+					<#if adLogList??>
+		        		<#list adLogList as entity>
+						<tr align="center">
+							<td><input type="checkbox" id="chid${entity.adId}" name="adCacheId" value="${entity.adId}"></td>
+							<td>${entity.adId}</td>
+							<td>${entity.cid}</td>
+							<td>${entity.eventType}</td>
+							<td>${entity.url}</td>
+							<td>${entity.ip}</td>
+							<td>${entity.isUser}</td>
+							<td>${entity.dkcode}</td>
+						</tr>
+						</#list>
+			        </#if>
+				</table>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

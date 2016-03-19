@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>动态sql执行</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>这是动态sql执行</h1>
+			<div>
+				<form name="sqlForm" id="sqlForm" method="post" action="${ctx}/cache/sql" >
+					输入sql查询语句:<br />
+					<textarea rows="6" cols="60" name="sqlSelect"></textarea>
+					<input type="submit" value="提交"/>
+				</form>
+				<form name="sqlUForm" id="sqlUForm" method="post" action="${ctx}/cache/sql" >
+					输入sql更新或插入语句:<br />
+					<textarea rows="6" cols="60" name="sqlUpdateOrInsert"></textarea>
+					<input type="submit" value="提交"/>
+				</form>
+				
+				<div style="clear:both;"></div>
+			</div>
+			<div>
+					${result?if_exists}
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

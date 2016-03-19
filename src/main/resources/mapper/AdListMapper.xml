@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adList">
+    <select id="findNormalByAdId" parameterType="int" resultType="com.hupu.ad.domain.AdList">
+        select
+            ad_id as adId,
+            title,
+            name,
+            introduce,
+            cid,
+            media_uri as mediaUri,
+            url,
+            classify,
+            classify_id as classifyId,
+            is_personal as isPersonal,
+            is_free as isFree
+        from ad_list
+        where sort=3 and ad_id = #{adId}
+    </select>
+
+    <select id="find" parameterType="int" resultType="hashmap">
+        SELECT start_time as startTime,
+            create_time as createTime,
+            is_checked as isChecked,
+            concat(classify,"") asclassify
+        FROM ad_list WHERE ad_id = #{adId}
+    </select>
+
+    <select id="findCompanyMoneyOut" resultType="int">
+        SELECT al.ad_id as adId
+        FROM ad_list al, ad_company_cost cc 
+		WHERE al.cid=cc.cid and cc.cost_money  <![CDATA[ >= ]]> cc.all_money
+    </select>
+
+    <select id="findByCurdate" resultType="int">
+        SELECT ad_id as adId
+		FROM ad_list 
+		WHERE sort = 3 AND is_checked = 3 
+        AND start_time = #{time}
+    </select>
+
+    <select id="findByCid" resultType="int" parameterType="int">
+        SELECT ac.ad_id from ad_list al,ad_cost ac 
+        WHERE al.ad_id =ac.ad_id 
+        AND al.cid=#{cid} AND ac.budget>ac.cost_money
+    </select>
+
+    <select id="findNormal" resultType="int">
+        SELECT l.ad_id 
+        FROM ad_list l,ad_cost c,ad_crowd cr
+        WHERE l.ad_id = c.ad_id AND l.ad_id=cr.ad_id
+        AND l.sort=3  AND l.is_checked=3 AND c.is_valid=1
+        AND l.start_time  <![CDATA[<= ]]> #{time}
+    </select>
+</mapper>

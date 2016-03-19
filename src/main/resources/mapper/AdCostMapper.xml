@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="adCost">
+    <select id="findByAdIds" parameterType="int" resultType="com.hupu.ad.domain.AdCost" >
+        SELECT
+            ac.ad_id as adId, 
+            al.cid,
+            ac.budget, 
+            ac.budget_sort as budgetSort, 
+            ac.bid, 
+            ac.charge_mode as chargeMode,
+            ac.cost_money
+        FROM ad_cost ac,ad_list al 
+        WHERE al.ad_id = ac.ad_id
+        AND ac.ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND ac.cost_Money <![CDATA[ < ]]> ac.budget
+        AND al.is_free = 2
+        AND al.classify != 3
+    </select>
+
+    <select id="findAdCostOut" resultType="string">
+    <![CDATA[
+        SELECT ad_id FROM ad_cost WHERE cost_money >= budget and is_valid = 1
+    ]]>
+    </select>
+    
+    <select id="findCompanyCostOut" resultType="string">
+    <![CDATA[
+        SELECT
+            ac.ad_id
+        FROM ad_cost ac, ad_list al, ad_company_cost cc 
+        WHERE ac.ad_id=al.ad_id 
+        and al.cid=cc.cid
+        and cc.cost_money >= cc.all_money
+        and ac.is_valid = 1
+    ]]>
+    </select>
+    
+    <select id="findExceedCostMoney" resultType="double" parameterType="map">
+        select
+          budget - cost_money
+        from ad_cost
+        where ad_id = #{adId}
+        AND cost_money + #{costMoney} > budget
+    </select>
+    
+    <select id="findInvalid" resultType="int">
+        SELECT al.ad_id FROM ad_cost ac,ad_list al WHERE al.ad_id=ac.ad_id 
+        AND ( al.sort in(-1 ,1) or ac.is_valid = -1 ) 
+        AND ac.ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <select id="findValid" resultType="int">
+        SELECT al.ad_id FROM ad_cost ac,ad_list al WHERE al.ad_id=ac.ad_id 
+        AND al.sort = 3
+        AND al.is_checked = 3
+        AND ac.is_valid = 1
+        AND ac.ad_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <!-- 查出所有公司费用没花完,广告预算没达到,is_valid为(已达到:-1)的不正常记录 -->
+    <select id="findMoney" resultType="int">
+    <![CDATA[
+        select ac.ad_id  from ad_cost ac,ad_list al,ad_company_cost cc 
+        where ac.ad_id=al.ad_id 
+        and al.cid=cc.cid
+        and is_valid = -1
+        and ac.budget > ac.cost_money 
+        and cc.all_money > cc.cost_money
+    ]]>
+    </select>
+    
+    <!-- 查出所有公司费用已花完或者广告预算已达到,is_valid为(未达到:1)到的不正常记录 -->
+    <select id="findNoMoney" resultType="int">
+    <![CDATA[
+        select ac.ad_id from ad_cost ac,ad_list al,ad_company_cost cc 
+        where ac.ad_id=al.ad_id
+        and al.cid=cc.cid
+        and is_valid = 1
+        and (ac.budget <= ac.cost_money or cc.all_money <= cc.cost_money)
+    ]]>
+    </select>
+    
+    <select id="findBidByAdIds" parameterType="int" resultType="com.hupu.ad.domain.AdCost">
+    	SELECT 
+		    ac.ad_id as adId, ac.bid
+		FROM
+		    ad_cost ac
+		WHERE
+		   ac.ad_id in 
+	        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+    
+    <update id="updateCostMoneyById" parameterType="map">
+        UPDATE ad_cost SET cost_money = cost_money + #{costMoney} WHERE ad_id = #{adId}
+    </update>
+    
+    <update id="updateDayBudgetCostMoneySetZero">
+        update ad_cost set cost_money = 0 where budget_sort=0
+    </update>
+    
+    <update id="updateOutMoney">
+        update ad_company_cost set cost_money = all_money where  cost_money>all_money
+    </update>
+    
+    
+    <update id="updateIsValid" parameterType="int">
+        UPDATE ad_cost SET is_valid = -1 WHERE is_valid = 1 AND ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateIsValidByCid" parameterType="int">
+        UPDATE ad_cost SET is_valid = 1 WHERE budget > cost_money 
+        AND ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    
+    <update id="updateIsValid(1)ByAdIds" parameterType="int">
+        UPDATE ad_cost SET is_valid = 1 WHERE ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    
+    <update id="updateIsValid(-1)ByAdIds" parameterType="int">
+        UPDATE ad_cost SET is_valid = -1 WHERE ad_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    
+</mapper>

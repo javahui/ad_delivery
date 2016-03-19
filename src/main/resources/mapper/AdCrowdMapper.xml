@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adCrowd">
+
+    <select id="findByAdId" parameterType="int" resultType="com.hupu.ad.domain.AdCrowd">
+		select
+		  ad_id as adId,
+		  region,
+		  age_range as ageRange,
+		  gender,
+		  interest
+	   from ad_crowd
+	   where  ad_id = #{id} limit 1
+    </select>
+    
+    <select id="findByAdIds" resultType="com.hupu.ad.domain.AdCrowd">
+		select
+		  ad_id as adId,
+		  region,
+		  age_range as ageRange,
+		  gender,
+		  interest
+		from ad_crowd
+		where ad_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <select id="findAgeByAdId" parameterType="int" resultType="string">
+		select
+		  age_range
+	   from ad_crowd
+	   where ad_id = #{id} limit 1
+    </select>
+    
+    <select id="findAllAgeRange" resultType="string">
+		select distinct  age_range  from ad_crowd
+    </select>
+</mapper>

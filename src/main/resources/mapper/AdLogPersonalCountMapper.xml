@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adLogPersonalCount">
+    
+    <select id="findByDkcode" parameterType="com.hupu.ad.domain.AdLogPersonalCount" resultType="int">
+        select 
+            id
+        from ad_log_personal_count where dkcode=#{dkcode} and ad_id=#{adId} limit 1
+    </select>
+    
+    <select id="findAll" resultType="com.hupu.ad.domain.AdLogPersonalCount">
+        select 
+		    ad_id as adId,
+		    show_count as showCount,
+		    click_count as clickCount,
+		    fans_count as  fansCount,
+		    dkcode
+        from ad_log_personal_count
+    </select>
+    
+    <insert id="insert" parameterType="com.hupu.ad.domain.AdLogPersonalCount" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO ad_log_personal_count(ad_id,show_count,click_count,fans_count,dkcode) 
+	    values(#{adId},#{showCount},#{clickCount},#{fansCount},#{dkcode})
+    </insert>
+
+   <update id="updateIncrementById" parameterType="com.hupu.ad.domain.AdLogPersonalCount">
+        UPDATE ad_log_personal_count SET 
+            show_count = show_count + #{showCount} , 
+            click_count = click_count + #{clickCount},
+            fans_count = fans_count + #{fansCount}
+        WHERE id=#{id} 
+   </update>
+    
+   <update id="updateCountByAdIdAndDkcode" parameterType="com.hupu.ad.domain.AdLogPersonalCount">
+        UPDATE ad_log_personal_count SET 
+            show_count = #{showCount}, 
+            click_count = #{clickCount},
+            fans_count = #{fansCount}
+        WHERE ad_id=#{adId} and dkcode=#{dkcode} 
+    </update>
+    
+</mapper>
+    

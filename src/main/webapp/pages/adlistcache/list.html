@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>广告缓存管理</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			//全选checkbox的处理方法  
+		    function doAllCheck(){  
+		        var allche = document.getElementById("allid");  
+		        var che = document.getElementsByName("adCacheId");  
+		        if(allche.checked == true){  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked="checked";  
+		            }  
+		        }else{  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked=false;  
+		            }  
+		        }  
+		    }  
+			
+			function selectOne() {
+				 var a = $(":checkbox:checked");
+				 if(a.length < 1) 
+					 return false;
+				 else 
+					 return true;
+				
+			}
+			
+			function settingAdIds(btnId) {
+				var obj=document.getElementsByName('adIds'); 
+			    //取到对象数组后，我们来循环检测它是不是被选中  
+			    var s='';  
+			    for(var i=0; i<obj.length; i++){  
+			      if(obj[i].checked) s+=obj[i].value+',';  //如果选中，将value添加到变量s中  
+			    }  
+				  
+				$("#"+btnId).val(s);
+			}
+		</script>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#delCache").click(function() {
+					if(!selectOne()) {
+						alert("至少选中一个缓存再删除");
+						return;
+					}
+					//$("#adIds-del").val("");
+					//settingAdIds("adIds-del");
+					$("#adForm").attr("action","del");
+					$("#adForm").submit();
+					
+				});
+				
+				$("#reNewCache").click(function() {
+					if(!selectOne()) {
+						alert("至少选中一个缓存再重新生成");
+						return;
+					}
+					$("#adForm").attr("action","renew");
+					$("#adForm").submit();
+					
+				});
+				
+				//关闭广告
+				$("#deladCrowd").click(function() {
+					if(!selectOne()) {
+						alert("至少选中一个缓存再关闭广告");
+						return;
+					}
+					$("#adIds-crowd").val("");
+					settingAdIds("adIds-crowd");
+					var adIds = $("#adIds-crowd").val();
+					var url = "${ctx}/stopAdList/"+adIds;
+					$.ajax( {
+						type : "get",
+						url : url,
+						dataType : "html",
+						beforeSend : function(XMLHttpRequest) {
+						// ShowLoading();
+						},
+						success : function(data) {
+							alert("关闭广告成功");
+							window.location.reload();
+						},
+						complete : function(XMLHttpRequest, textStatus) {
+							// HideLoading();
+						},
+						error : function() {
+							// 请求出错处理
+						}
+					}); 
+					
+					
+				});
+				
+				/**
+				** 开启广告
+				**/
+				$("#reNewCrowdCache").click(function() {
+					if(!selectOne()) {
+						alert("至少选中一个广告缓存再开启广告");
+						return;
+					}
+					$("#adIds-crowd").val("");
+					settingAdIds("adIds-crowd");
+					var adIds = $("#adIds-crowd").val();
+					var url = "${ctx}/startAdList/"+adIds;
+					$.ajax( {
+						type : "get",
+						url : url,
+						dataType : "html",
+						beforeSend : function(XMLHttpRequest) {
+						// ShowLoading();
+						},
+						success : function(data) {
+							alert("开启广告成功");
+							window.location.reload();
+						},
+						complete : function(XMLHttpRequest, textStatus) {
+							// HideLoading();
+						},
+						error : function() {
+							// 请求出错处理
+						}
+					}); 
+					
+					
+				});
+	        });
+   </script>
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>这是广告的所有缓存列表</h1>
+			<div>
+				<input type="button" name="delCache" id="delCache" value="删除缓存" />
+				<input type="button" name="reNewCache" id="reNewCache" value="重新生成缓存" />
+				<input type="button" name="reNewCrowdCache" id="reNewCrowdCache" value="开启广告" />
+				<input type="hidden" name="adIdAjaxs" id="adIds-crowd" value="" />
+				<input type="button" name="deladCrowd" id="deladCrowd" value="关闭广告" />
+				
+				<form name="adlistForm" id="adListForm" method="post" action="${ctx}/cache/create" style="width:360px;float:left;">
+					输入广告id:<input type="text" name="newAdId" id="newAdId" value="" />
+					<input type="submit" name="生成缓存" value="生成缓存"/>
+				</form>
+				
+				<div style="clear:both;"></div>
+			</div>
+			<div>
+				<form name="adForm" id="adForm" method="post">
+				<table width="100%" border="1" align="center" cellpadding="3" cellspacing="1">
+					<tr align="left">
+						<th width="5%"><input type="checkbox" id="allid" onclick="doAllCheck()" title="全选" />全选</th>
+						<th width="5%">广告id</th>
+						<th width="6%">广告标题</th>
+						<th width="6%">宣传名称</th>
+						<th width="5%">广告商id</th>
+						<th width="5%">分类</th>
+						<th width="7%">分类id</th>
+						<th width="5%">是否免费</th>
+						<th width="12%">操作</th>
+					</tr>
+					<#if adListCacheList??>
+		        		<#list adListCacheList as entity>
+						<tr align="left">
+							<td width="5%"><input type="checkbox" name="adIds" value="${entity.adId}"></td>
+							<td width="5%">${entity.adId}</td>
+							<td width="6%">${entity.title}</td>
+							<td width="6%">${entity.name}</td>
+							<td width="5%">${entity.cid}</td>
+							<td width="5%">${entity.classify}</td>
+							<td width="7%">${entity.classifyId}</td>
+							<td width="5%">${entity.isFree}</td>
+							<td width="12%"><a href="${ctx}/cache/crowd/valid?adId=${entity.adId}">投放信息</a></td>
+						</tr>
+						</#list>
+			        </#if>
+				</table>
+				</form>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

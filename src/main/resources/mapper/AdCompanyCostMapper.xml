@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adCompanyCost">
+
+    <select id="findBy" parameterType="string" resultType="com.hupu.ad.domain.AdConfig" >
+        select
+          var,
+          datavalue
+        from ad_config
+        where var = #{var} limit 1
+    </select>
+    
+	<update id="updateAdCompanyCostMoney" parameterType="map">
+		UPDATE ad_company_cost SET cost_money = cost_money + #{costMoney} WHERE cid = #{cid}
+	</update>
+</mapper>

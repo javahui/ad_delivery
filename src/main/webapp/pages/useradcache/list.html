@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>个人用户广告缓存管理</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			//全选checkbox的处理方法  
+		    function doAllCheck(){  
+		        var allche = document.getElementById("allid");  
+		        var che = document.getElementsByName("adCacheId");  
+		        if(allche.checked == true){  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked="checked";  
+		            }  
+		        }else{  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked=false;  
+		            }  
+		        }  
+		    }  
+			
+			function selectOne() {
+				 var a = $(":checkbox:checked");
+				 if(a.length < 1) 
+					 return false;
+				 else 
+					 return true;
+				
+			}
+			
+			function settingAdIds(btnId) {
+				var obj=document.getElementsByName('adCacheId'); 
+			    //取到对象数组后，我们来循环检测它是不是被选中  
+			    var s='';  
+			    for(var i=0; i<obj.length; i++){  
+			      if(obj[i].checked) s+=obj[i].value+',';  //如果选中，将value添加到变量s中  
+			    }  
+				  
+				$("#"+btnId).val(s);
+			}
+		</script>
+		
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>这是个人用户的广告缓存列表</h1>
+			<div>
+				
+				<table width="100%" border="1" align="center" cellpadding="3" cellspacing="1">
+					<tr align="center">
+						<th><input type="checkbox" id="allid" onclick="doAllCheck()" title="全选" />全选</th>
+						<th>用户id</th>
+						<th>广告id列表</th>
+					</tr>
+						<#list vmap?keys as key>
+						<tr align="center">
+							<td><input type="checkbox" id="chid${key}" name="adCacheId" value="${key}"></td>
+							<td>${key}</td>
+							<td>${vmap[key]}</td>
+						</tr>
+						</#list>
+			        
+				</table>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

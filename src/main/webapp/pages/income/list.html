@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>手动执行定时器</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				//校验广告是否投放,并开启
+				$("#checkCrowd").click(function() {
+					ajaxSync("${ctx}/checkCrowd");
+				});
+				
+				/**
+				** 每天晚上统计个人广告日志，对用户进行分成
+				**/
+				$("#income").click(function() {
+					ajaxSync("${ctx}/income");
+				});
+				
+				/**
+				** 校验ad_log表记录与ad_log_count表的数据一致性
+				**/
+				$("#data").click(function() {
+					ajaxSync("${ctx}/data");
+				});
+				
+				
+				/**
+				** 校验ad_log表记录与ad_log_presonal_count表的数据一致性
+				**/
+				$("#presonal").click(function() {
+					ajaxSync("${ctx}/presonal");
+				});
+				
+				/**
+				** 全部重新分成
+				**/
+				$("#renewgen").click(function() {
+					ajaxSync("${ctx}/renewgen");
+				});
+				
+				/**
+				** 对没进行分成的adlog记录进行分成
+				**/
+				$("#recordsinto").click(function() {
+					ajaxSync("${ctx}/recordsinto");
+				});
+				
+				/**
+				** 生成用户关注缓存
+				**/
+				$("#uattenation").click(function() {
+					ajaxSync("${ctx}/uattenation");
+				});
+				
+				/**
+				** 生成用户关注缓存
+				**/
+				$("#agerange").click(function() {
+					ajaxSync("${ctx}/agerange");
+				});
+	        });
+			
+			function ajaxSync(url,param) {
+				$.ajax( {
+					type : "get",
+					url : url,
+					dataType : "html",
+					success : function(data) {
+						alert(data);
+					}
+				}); 
+				
+			}
+   </script>
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>手动执行定时器成功</h1>
+			<input type="button" name="timer1" value="校验广告是否投放,并开启" id="checkCrowd"/> <br/>
+			<input type="button" name="timer2" value="每天晚上统计个人广告日志，对用户进行分成" id="income"/> <br/>
+			<input type="button" name="timer3" value="校验ad_log表记录与ad_log_count表的数据一致性" id="data"/> <br/>
+			<input type="button" name="timer4" value="校验ad_log表记录与ad_log_presonal_count表的数据一致性" id="presonal"/> <br/>
+			<input type="button" name="timer5" value="对没进行分成的adlog记录进行分成" id="recordsinto"/> <br/>
+			<input type="button" name="timer6" value="全部重新分成" id="renewgen"/><br/>
+			<input type="button" name="timer7" value="生成用户关注缓存" id="uattenation"/> <br/>
+			<input type="button" name="timer7" value="重新生成年龄范围缓存" id="agerange"/>
+		</div>
+	</body>
+</html>

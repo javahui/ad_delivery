@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>用户缓存管理</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<div class="main">
+			<h1>这是用户的缓存管理</h1>
+			<div>
+				<form name="adlistForm" id="adListForm" method="post" action="${ctx}/cache/userinfo/detail" style="width:360px;float:left;">
+					输入用户id:<input type="text" name="uId" id="uId" value="" />
+					<input type="submit" name="查询详细记录" value="查询详细记录"/>
+				</form>
+				
+				<div style="clear:both;"></div>
+			</div>
+			<div>
+				
+				
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

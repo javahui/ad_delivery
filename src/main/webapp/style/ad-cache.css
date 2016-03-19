@@ -1,0 +1,12 @@
+.left-box {
+	float:left;
+	width:200px;
+}
+.left-box ul {
+	list-style-type:none;
+}
+.main {
+	float:left;
+	margin-left:10px;
+	width:800px;
+}

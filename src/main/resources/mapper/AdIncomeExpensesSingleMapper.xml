@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="adIncomeExpensesSingle">
+    
+    <select id="find" parameterType="com.hupu.ad.domain.AdIncomeExpensesSingle" resultType="int">
+	    SELECT 
+	       id 
+	    FROM ad_income_expenses_single
+	    WHERE ad_id=#{adId} and dkcode=#{dkcode} and dateline=#{dateline} limit 1
+    </select>
+
+    <insert id="insert" parameterType="com.hupu.ad.domain.AdIncomeExpensesSingle" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO ad_income_expenses_single(ad_id,dkcode,type,money,dateline) 
+		                               VALUES(#{adId}, #{dkcode}, 1, #{money}, #{dateline})
+	</insert>
+	
+    <update id="updateMoney" parameterType="com.hupu.ad.domain.AdIncomeExpensesSingle">
+		UPDATE ad_income_expenses_single SET money = money + #{money} WHERE id = #{id}
+	</update>
+    
+    <delete id="deleteAll">
+        delete from ad_income_expenses_single
+    </delete>
+</mapper>

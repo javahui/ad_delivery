@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>广告缓存管理</title>
+		<#include "/common/meta.html"/>
+		<link href="${ctx}/style/ad-cache.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="${ctx}/scripts/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript">
+			//全选checkbox的处理方法  
+		    function doAllCheck(){  
+		        var allche = document.getElementById("allid");  
+		        var che = document.getElementsByName("adCacheId");  
+		        if(allche.checked == true){  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked="checked";  
+		            }  
+		        }else{  
+		            for(var i=0;i<che.length;i++){  
+		                che[i].checked=false;  
+		            }  
+		        }  
+		    }  
+			
+			function selectOne() {
+				 var a = $(":checkbox:checked");
+				 if(a.length < 1) 
+					 return false;
+				 else 
+					 return true;
+				
+			}
+			
+			function settingAdIds(btnId) {
+				var obj=document.getElementsByName('adCacheId'); 
+			    //取到对象数组后，我们来循环检测它是不是被选中  
+			    var s='';  
+			    for(var i=0; i<obj.length; i++){  
+			      if(obj[i].checked) s+=obj[i].value+',';  //如果选中，将value添加到变量s中  
+			    }  
+				  
+				$("#"+btnId).val(s);
+			}
+			
+			function cancelOneCache(uid,adId) {
+				if(confirm("确定要取消该广告缓存吗?")) {
+					var url = "${ctx}/delAttention?uid="+uid+"&adId="+adId;
+					$.ajax( {
+						type : "get",
+						url : url,
+						dataType : "html",
+						beforeSend : function(XMLHttpRequest) {
+						// ShowLoading();
+						},
+						success : function(data) {
+							alert(data);
+						},
+						complete : function(XMLHttpRequest, textStatus) {
+							// HideLoading();
+						},
+						error : function() {
+							// 请求出错处理
+						}
+					}); 
+					
+				}
+			}
+		</script>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#reNewCache").click(function() {
+					if(!selectOne()) {
+						alert("至少选中一个缓存再重新生成");
+						return;
+					}
+					$("#adIds-renew").val("");
+					settingAdIds("adIds-renew");
+					$("#reNewAttentionCacheForm").submit();
+					
+				});
+				
+	        });
+   </script>
+		
+	</head>
+	<body>
+		<#include "/common/nav-left.html"/>
+		<#setting number_format="#">
+		<div class="main">
+			<h1>这是用户的广告关注缓存列表</h1>
+			<div>
+				<form name="reNewAttentionCacheForm" id="reNewAttentionCacheForm" method="post" action="${ctx}/cache/renew-attention" style="width:160px;float:left;">
+					<input type="hidden" name="adIds" id="adIds-renew" value="" />
+					<input type="button" name="reNewCache" id="reNewCache" value="重新生成缓存" />
+				</form>
+				<form name="adlistForm" id="adListForm" method="post" action="${ctx}/cache/attention/create" style="width:360px;float:left;">
+					输入用户id:<input type="text" name="uId" id="uId" value="" />
+					<input type="submit" name="生成缓存" value="生成缓存"/>
+				</form>
+				
+				<div style="clear:both;"></div>
+			</div>
+			<div>
+				
+				<table width="100%" border="1" align="center" cellpadding="3" cellspacing="1">
+					<tr align="center">
+						<th><input type="checkbox" id="allid" onclick="doAllCheck()" title="全选" />全选</th>
+						<th>用户id</th>
+						<th>广告id列表</th>
+					</tr>
+						<#list lists as item>
+						<tr align="center">
+							<td><input type="checkbox" id="chid${item.uid}" name="adCacheId" value="${item.uid}"></td>
+							<td>${item.uid}</td>
+							<td>
+							<#list item.getAdIds() as entity>
+								<a href="javascript:void(0);" onclick="cancelOneCache('${item.uid}','${entity}');" >${entity}</a>
+							</#list>
+							</td>
+						</tr>
+						</#list>
+			        
+				</table>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

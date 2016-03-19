@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adCustom">
+    <select id="findAdIdsByAdUid" parameterType="int" resultType="String">
+        select
+            ad_ids as adIds
+        from ad_custom
+        where uid = #{uid} limit 1
+    </select>
+    
+    <select id="findUidByDkcode" resultType="int" parameterType="int">
+        select uid from ad_custom where dkcode=#{dkcode}
+    </select>
+    
+    <insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ad_custom(uid,dkcode,ad_ids,status,class,dateline,updatetime,is_seal) 
+                     VALUES(#{uid},#{dkcode},#{adIds},#{status},#{class},#{dateline},0,-1)
+    </insert>
+    
+    <update id="update" parameterType="map">
+        update ad_custom set ad_ids=#{adIds},status=#{status} where uid = #{uid} 
+    </update>
+    
+    <update id="updateStatus" parameterType="int">
+        update ad_custom set status=1 where uid = #{uid}
+    </update>
+</mapper>

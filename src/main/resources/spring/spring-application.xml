@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	<context:annotation-config />
+	<context:component-scan base-package="com.hupu"/>
+    <context:property-placeholder location="classpath:properties/application.properties"/>
+    
+    <!-- 广告数据源 -->
+    <bean id="adDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${ad.jdbc.url}" />
+        <property name="username" value="${ad.jdbc.username}" />
+        <property name="password" value="${ad.jdbc.password}" />
+    </bean>
+  
+    <bean id="adSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" >
+            <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+                <property name="dataSource" ref="adDataSource"/>
+                <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="adJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="adDataSource"/>
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="adDataSource" />
+    </bean>
+    
+    
+</beans>

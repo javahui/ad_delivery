@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adLog">
+	<select id="findIncome" resultType="hashmap">
+        SELECT 
+            l.id,
+            l.ad_id as adId,
+            l.action_dkcode,
+            c.bid,
+            concat(l.event_type) as eventType,
+            UNIX_TIMESTAMP(concat(FROM_UNIXTIME(l.dateline,'%Y%m'),'01')) as dateline
+        FROM ad_log l,ad_cost c 
+        WHERE l.ad_id=c.ad_id
+        AND l.is_user = 1
+        AND l.action_dkcode != 0
+        AND l.is_income = 0
+        AND (
+              (c.charge_mode = 'CPM' and l.event_type = 1) or       
+              (c.charge_mode = 'CPC' and l.event_type = 2) or            
+              (c.charge_mode = 'FANS' and l.event_type = 3)
+            )
+    </select>
+  
+    <select id="findAdLogByAdId" parameterType="int" resultType="com.yeyaomai.dksns.ad.domain.AdLog">
+		select
+			ad_id as adId,
+			cid,
+			url,
+			ip,
+			event_type as eventType,
+			url,
+			is_user as isUser,
+			action_dkcode as actionDkcode
+		from ad_log
+		where ad_id = #{adId}
+	</select>
+	
+    <select id="findTodayClick" parameterType="hashmap" resultType="String">
+		SELECT
+			ad_id
+		FROM ad_log
+		WHERE event_type=2 
+		AND ad_id = #{adId}
+		AND dateline <![CDATA[ >= ]]> #{startTime} and dateline  <![CDATA[ <= ]]> #{endTime}
+		AND action_dkcode = #{actionDkcode}
+		limit 1
+	</select>
+	
+    <select id="findStatistics" resultType="hashmap">
+         select
+            (select count(1) from ad_log where event_type=1) as showCount,
+            (select count(1) from ad_log where event_type=2) as clickCount,
+            (select count(1) from ad_log where event_type=3) as fansCount
+        from ad_log l limit 1
+    </select>
+	
+    <select id="findLogPersonalCount" resultType="com.yeyaomai.dksns.ad.domain.AdLogPersonalCount">
+        select 
+            l.ad_id as adId,
+            l.action_dkcode as dkcode,
+            (select count(1) from ad_log where event_type=1 and ad_id=l.ad_id and action_dkcode=l.action_dkcode) as showCount,        
+            (select count(1) from ad_log where event_type=2 and ad_id=l.ad_id and action_dkcode=l.action_dkcode) as clickCount,
+            (select count(1) from ad_log where event_type=3 and ad_id=l.ad_id and action_dkcode=l.action_dkcode) as fansCount
+        from ad_log l where is_user = 1 and action_dkcode != 0
+        group by l.ad_id,l.action_dkcode
+    </select>
+	
+    <select id="findLogCount" resultType="com.yeyaomai.dksns.ad.domain.AdLogCount">
+        select 
+            l.ad_id as adId,
+            (select count(1) from ad_log where event_type=1 and ad_id=l.ad_id and UNIX_TIMESTAMP(FROM_UNIXTIME(dateline,'%Y%m%d'))=UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))) as showCount,        
+            (select count(1) from ad_log where event_type=2 and ad_id=l.ad_id and UNIX_TIMESTAMP(FROM_UNIXTIME(dateline,'%Y%m%d'))=UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))) as clickCount,
+            (select count(1) from ad_log where event_type=3 and ad_id=l.ad_id and UNIX_TIMESTAMP(FROM_UNIXTIME(dateline,'%Y%m%d'))=UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))) as fansCount,
+            UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d')) as dateline
+        from ad_log l
+        where 1=1
+		group by l.ad_id,
+                UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))                 
+    </select>
+	
+    <insert id="insert" parameterType="com.yeyaomai.dksns.ad.domain.AdLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ad_log(cid,ad_id,event_type,url,ip,dateline,is_user,dkcode,action_dkcode)
+        VALUES(#{cid},#{adId},#{eventType},#{url},#{ip},#{dateline},#{isUser},#{dkcode},#{actionDkcode})
+    </insert>
+    
+    <update id="updateIncomeInValid">
+        UPDATE ad_log l,ad_cost c set l.is_income = 1 WHERE l.ad_id=c.ad_id 
+        AND l.is_user = 1
+        AND l.action_dkcode != 0
+        AND l.is_income = 0
+        AND (
+              (c.charge_mode = 'CPM' and l.event_type = 1) or       
+              (c.charge_mode = 'CPC' and l.event_type = 2) or            
+              (c.charge_mode = 'FANS' and l.event_type = 3)
+            )   
+    </update>
+    
+    <update id="updateIncomeValid">
+        UPDATE ad_log l,ad_cost c SET l.is_income = 0 WHERE l.ad_id=c.ad_id 
+        AND l.is_user = 1
+        AND l.action_dkcode != 0
+        AND l.is_income = 1
+        AND (
+              (c.charge_mode = 'CPM' and l.event_type = 1) or       
+              (c.charge_mode = 'CPC' and l.event_type = 2) or            
+              (c.charge_mode = 'FANS' and l.event_type = 3)
+            )   
+    </update>
+</mapper>

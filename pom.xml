@@ -1,0 +1,340 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.hupu</groupId>
+	<artifactId>ad_delivery</artifactId>
+	<packaging>war</packaging>
+	<version>1.3-SNAPSHOT</version>
+	<description>广告投放系统 </description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.7</jdk.version>
+		<spring.version>4.2.5.RELEASE</spring.version>
+		<org.slf4j.version>1.7.19</org.slf4j.version>
+		<logback.version>1.1.6</logback.version>
+	</properties>
+
+	<dependencies>
+		<!-- log...... -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.6.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.8.1</version>
+		</dependency>
+
+		<!-- DB Related -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.37</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+
+		<!-- apache commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+
+		<!-- j2ee web start -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<!-- others -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.47</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.esotericsoftware.kryo</groupId>
+			<artifactId>kryo</artifactId>
+			<version>2.20</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>4.0.38</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.23</version>
+		</dependency>
+	</dependencies>
+
+	<!-- 插件配置 -->
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>logback.xml</include>
+				</includes>
+			</resource>
+
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.svn</exclude>
+					<exclude>**/Thumbs.db</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- jar source -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- 开发 -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<!-- dk_addb -->
+				<ad.jdbc.url>jdbc:mysql://192.168.12.251/dk_ad?characterEncoding=utf8</ad.jdbc.url>
+				<ad.jdbc.username>hupu_dev</ad.jdbc.username>
+				<ad.jdbc.password>hupu_yymdev</ad.jdbc.password>
+
+				<!--ad redis -->
+				<ad.redis.host>192.168.12.252</ad.redis.host>
+				<ad.redis.port>6379</ad.redis.port>
+				<ad.redis.timeout>2000</ad.redis.timeout>
+				<ad.redis.password>^yymredispwd$</ad.redis.password>
+
+				<!--queue redis -->
+				<queue.redis.host>192.168.12.252</queue.redis.host>
+				<queue.redis.port>6379</queue.redis.port>
+				<queue.redis.timeout>2000</queue.redis.timeout>
+				<queue.redis.password>^yymredispwd$</queue.redis.password>
+
+				<!--user redis -->
+				<user.redis.host>192.168.12.252</user.redis.host>
+				<user.redis.port>6379</user.redis.port>
+				<user.redis.timeout>300</user.redis.timeout>
+				<user.redis.password>^yymredispwd$</user.redis.password>
+
+				<!--tomcat -->
+				<tomcat.url>192.168.12.77:8080</tomcat.url>
+				<tomcat.username>tomcat</tomcat.username>
+				<tomcat.password>123456</tomcat.password>
+
+				<log.level>debug</log.level>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+
+		<profile>
+			<id>test</id>
+			<properties>
+				<!-- dk_addb -->
+				<ad.jdbc.url>jdbc:mysql://192.168.12.232/dk_ad?characterEncoding=utf8</ad.jdbc.url>
+				<ad.jdbc.username>hupu_dev</ad.jdbc.username>
+				<ad.jdbc.password>hupu_yymdev</ad.jdbc.password>
+
+				<!--ad redis -->
+				<ad.redis.host>192.168.12.87</ad.redis.host>
+				<ad.redis.port>6379</ad.redis.port>
+				<ad.redis.timeout>2000</ad.redis.timeout>
+				<ad.redis.password>^yymredispwd$</ad.redis.password>
+
+				<!--queue redis -->
+				<queue.redis.host>192.168.12.87</queue.redis.host>
+				<queue.redis.port>6379</queue.redis.port>
+				<queue.redis.timeout>2000</queue.redis.timeout>
+				<queue.redis.password>^yymredispwd$</queue.redis.password>
+
+				<!--user redis -->
+				<user.redis.host>192.168.12.87</user.redis.host>
+				<user.redis.port>6379</user.redis.port>
+				<user.redis.timeout>300</user.redis.timeout>
+				<user.redis.password>^yymredispwd$</user.redis.password>
+
+				<!--tomcat -->
+				<tomcat.url>192.168.12.7:8080</tomcat.url>
+				<tomcat.username>tomcat</tomcat.username>
+				<tomcat.password>123456</tomcat.password>
+
+				<log.level>error</log.level>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+
+	</profiles>
+
+</project>
