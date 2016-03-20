@@ -17,10 +17,8 @@ public class AbstractDAO {
 	/**
 	 * 广告DAO
 	 */
-	@Resource 
-	protected SqlSessionTemplate adSqlSession;
+	@Resource protected SqlSessionTemplate adSqlSession;
 	
-	@Resource
-	protected JdbcTemplate adJdbcTemplate;
+	@Resource protected JdbcTemplate adJdbcTemplate;
 }
 	

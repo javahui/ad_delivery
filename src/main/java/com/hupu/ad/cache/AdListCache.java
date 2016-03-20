@@ -24,8 +24,7 @@ public class AdListCache extends AbstractCache{
 	/**
 	 * 广告表DAO
 	 */
-	@Resource 
-	private AdListDao adListDao;
+	@Resource private AdListDao adListDao;
 	
 	/**
 	 * 广告记录的KEY的前缀

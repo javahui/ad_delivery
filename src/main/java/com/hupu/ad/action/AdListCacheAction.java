@@ -9,13 +9,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -47,19 +47,12 @@ public class AdListCacheAction {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Resource private AdListCache adListCache;
-	
 	@Resource private AdCrowdCache adCrowdCache;
-	
 	@Resource private AdAttentionCache adAttentionCache;
-	
 	@Resource private AdCustomCache adCustomCache;
-	
 	@Resource private AdLogQueueCache adLogQueueCache;
-	
 	@Resource private UserInfoCache userInfoCache;
-	
 	@Resource private AdLogService adLogService;
-	
 	@Resource private SqlExecService sqlExecService;
 	
 
@@ -143,7 +136,7 @@ public class AdListCacheAction {
 	public String userInfoDetail(@RequestParam String uId,Model model){
 		if(StringUtils.isNotEmpty(uId)) {
 			Map map = userInfoCache.getUser(Integer.parseInt(uId));
-			model.addAttribute("userinfo", ObjectUtils.toString(map));
+			model.addAttribute("userinfo", Objects.toString(map));
 		}
 		return "usercache/detail";
 	}
@@ -369,7 +362,7 @@ public class AdListCacheAction {
 		}else {
 			result = sqlExecService.execUpdateOrInsert(sqlUpdateOrInsert);
 		}
-		model.addAttribute("result", ObjectUtils.toString(result));
+		model.addAttribute("result", Objects.toString(result));
 		return "sqlexec/list";
 	}
 	

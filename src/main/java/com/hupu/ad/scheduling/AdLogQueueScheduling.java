@@ -27,6 +27,7 @@ public class AdLogQueueScheduling {
 	@Resource private AdSysService adSysService;
 	@Resource private AdCompanyCostService adCompanyCostService;
 	@Resource private AdCostDao adCostDao;
+	
 	/**
 	 * 每几分钟,把队列数据保存到MYSQL中
 	 */

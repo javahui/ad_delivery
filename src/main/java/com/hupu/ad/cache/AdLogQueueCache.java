@@ -22,7 +22,6 @@ import com.hupu.ad.domain.AdLog;
  */
 @Component
 public class AdLogQueueCache extends AbstractCache{
-	
 	/**
 	 * 用户信息的KEY的前缀
 	 */

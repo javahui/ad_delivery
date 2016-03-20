@@ -176,8 +176,8 @@ public class AdCrowdCache extends AbstractCache{
 	public void saveAgeRangeCache(List<String> ageRangeList){
 		for (String ageRange : ageRangeList) {
 			String[] ageArray = StringUtils.split(ageRange, "_");
-			if(ageArray == null || ageArray.length != 2){
-				log.error("年龄段数据不正常:{}", ageArray);
+			if(ArrayUtils.getLength(ageArray) != 2){
+				log.error("年龄段数据不正常:{}", ageRange);
 				continue;
 			}
 			int startAge = NumberUtils.toInt(ageArray[0]);
