@@ -16,7 +16,7 @@
 	</appender>
 	
 	<appender name="errorFile" class="ch.qos.logback.core.FileAppender">
-		<file>/logs/dksns_ad.error.log</file>
+		<file>/logs/ad.error.log</file>
 		<encoder>
 			<pattern>%d{MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</pattern>
 		</encoder>

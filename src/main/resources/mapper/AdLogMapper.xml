@@ -21,7 +21,7 @@
             )
     </select>
   
-    <select id="findAdLogByAdId" parameterType="int" resultType="com.yeyaomai.dksns.ad.domain.AdLog">
+    <select id="findAdLogByAdId" parameterType="int" resultType="com.hupu.ad.domain.AdLog">
 		select
 			ad_id as adId,
 			cid,
@@ -54,7 +54,7 @@
         from ad_log l limit 1
     </select>
 	
-    <select id="findLogPersonalCount" resultType="com.yeyaomai.dksns.ad.domain.AdLogPersonalCount">
+    <select id="findLogPersonalCount" resultType="com.hupu.ad.domain.AdLogPersonalCount">
         select 
             l.ad_id as adId,
             l.action_dkcode as dkcode,
@@ -65,7 +65,7 @@
         group by l.ad_id,l.action_dkcode
     </select>
 	
-    <select id="findLogCount" resultType="com.yeyaomai.dksns.ad.domain.AdLogCount">
+    <select id="findLogCount" resultType="com.hupu.ad.domain.AdLogCount">
         select 
             l.ad_id as adId,
             (select count(1) from ad_log where event_type=1 and ad_id=l.ad_id and UNIX_TIMESTAMP(FROM_UNIXTIME(dateline,'%Y%m%d'))=UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))) as showCount,        
@@ -78,7 +78,7 @@
                 UNIX_TIMESTAMP(FROM_UNIXTIME(l.dateline, '%Y%m%d'))                 
     </select>
 	
-    <insert id="insert" parameterType="com.yeyaomai.dksns.ad.domain.AdLog" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.hupu.ad.domain.AdLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ad_log(cid,ad_id,event_type,url,ip,dateline,is_user,dkcode,action_dkcode)
         VALUES(#{cid},#{adId},#{eventType},#{url},#{ip},#{dateline},#{isUser},#{dkcode},#{actionDkcode})
     </insert>

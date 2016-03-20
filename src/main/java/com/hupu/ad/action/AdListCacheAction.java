@@ -326,24 +326,6 @@ public class AdListCacheAction {
 	}
 	
 	/**
-	 * 拷贝日志文件到应用服务器目录下
-	 */
-	@RequestMapping(value="/logs", method=RequestMethod.GET)
-	public String copyLogs(@RequestParam(required = false) String date, Model model){
-		if(StringUtils.isBlank(date)) {
-			date = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-		}
-		String fileName = String.format("/logs/dksns_ad.%s.log", date);
-		try {
-			List<String> logsList = FileUtils.readLines(new File(fileName));
-			model.addAttribute("logsList", logsList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "findlog4j/list";
-	}
-	
-	/**
 	 * 跳转到sql执行页面
 	 */
 	@RequestMapping(value="/showsql", method=RequestMethod.GET)
