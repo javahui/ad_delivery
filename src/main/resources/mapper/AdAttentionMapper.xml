@@ -6,11 +6,11 @@
 		SELECT uid,ad_id as adId FROM ad_attention WHERE is_attentioned = 1
 	</select>
 	
-    <insert id="insert" parameterType="hupu.ad.domain.AdAttention">
+    <insert id="insert" parameterType="com.hupu.ad.domain.AdAttention">
         INSERT INTO ad_attention(ad_id,uid,is_attentioned,dateline) VALUES(#{adId},#{uid},#{isAttentioned},#{dateline})
     </insert>
     
-    <update id="updateIsAttentioned" parameterType="hupu.ad.domain.AdAttention">
+    <update id="updateIsAttentioned" parameterType="com.hupu.ad.domain.AdAttention">
         update ad_attention set is_attentioned = #{isAttentioned} where ad_id=#{adId} and uid=#{uid}
     </update>
 </mapper>
